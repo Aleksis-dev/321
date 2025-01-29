@@ -1,0 +1,3 @@
+on load:
+	{var} = "&7[Lvl 0] &cZombie &7[&a12&7/&a12&7]"
+	
