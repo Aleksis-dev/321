@@ -4,11 +4,38 @@ function scoreboard(p: player):
 	set line 2 of {_p}'s scoreboard to "&f&l%{_p}%"
 	set line 3 of {_p}'s scoreboard to "&e"
 	set line 4 of {_p}'s scoreboard to "&fPurse: &6%{balance::%{_p}'s uuid%}%"
+	set line 5 of {_p}'s scoreboard to "&e"
+	set line 6 of {_p}'s scoreboard to "&7www.Dungeons.net"
+	
+function actionBar(p: player):
+	send action bar "&c%health of {_p} %/%{health::%{_p}'s uuid%}%❤   &a%{defense::%{_p}'s uuid%}%❈ Defense   &b%{mana::%{_p}'s uuid%}%/%{maxmana::%{_p}'s uuid%}%✎ Intelligence" to {_p}
+	
+function manaRegen(p: player):
+	wait 0.5 seconds
+	set {_intelligence} to rounded down {intelligence::%{_p}'s uuid%}
+	add 1 + {_intelligence}/2 to {mana::%{_p}'s uuid%}
 
 on join:
+	if {joined::%player's uuid%} is not set:
+		set {joined::%player's uuid%} to true
+		set {balance::%player's uuid%} to 0
+		set {critChance::%player's uuid%} to 1
+		set {critDamage::%player's uuid%} to 100
+		set {mana::%player's uuid%} to 100
+		set {maxmana::%player's uuid%} to 100 + (rounded down {intelligence::%player's uuid%})
+		set {strength::%player's uuid%} to 0
+		set {intelligence::%player's uuid%} to 0
+		set {defense::%player's uuid%} to 0
+		set {health::%player's uuid%} to 20
+		set {speed::%player's uuid%} to 10
+		
 	while player is online:
 		wait 5 ticks
-
+		scoreboard(event-player)
+		actionBar(event-player)
+		if {mana::%{_p}'s uuid%} < {maxmana::%{_p}'s uuid%}:
+			manaRegen(event-player)
+		set player's walkspeed to ({speed::%player's uuid%}/10)
 
 function spawnMob(p: player, m: text, hp: number, lvl: number):
 	if {_m} is "Zombie":
@@ -16,7 +43,7 @@ function spawnMob(p: player, m: text, hp: number, lvl: number):
 	set {_e} to last spawned entity
 	set {_e}'s health to {_hp}
 	set {_e}'s max health to {_hp}
-	set {_e}'s display name to "&7[Lvl %{_lvl}%] &c{_m} &7[&a%{_hp}%&7/&a%{_hp}%&7] &cx"
+	set {_e}'s display name to "&7[Lvl %{_lvl}%] &c{_m} &7[&a%{_hp}%&7/&a%{_hp}%&7] &c❤"
 
 on load:
 	{var} = "&7[Lvl 0] &cZombie &7[&a12&7/&a12&7]"
@@ -47,6 +74,6 @@ on death:
 
 function MainMenu(p: player):
 	set {_gui} to a new chest inventory with 6 rows named "Menu"
-	set slot 13 of {_gui} to 
+	set slot 13 of {_gui} to {_p}'s skull named "&e&lStats" with lore "  &c❤ Health &f%{health::%{_p}'s uuid%}%" and "  &a❈ Defense &f%{defense::%{_p}'s uuid%}%" and "  &c❁ Strength &f%{strength::%{_p}'s uuid%}%" and "  &f✦ Speed %{speed::%{_p}'s uuid%}%"
 	open {_gui} to {_p}
 			
