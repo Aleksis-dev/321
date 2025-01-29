@@ -74,6 +74,6 @@ on death:
 
 function MainMenu(p: player):
 	set {_gui} to a new chest inventory with 6 rows named "Menu"
-	set slot 13 of {_gui} to {_p}'s skull named "&e&lStats" with lore "  &c❤ Health &f%{health::%{_p}'s uuid%}%" and "  &a❈ Defense &f%{defense::%{_p}'s uuid%}%" and "  &c❁ Strength &f%{strength::%{_p}'s uuid%}%" and "  &f✦ Speed %{speed::%{_p}'s uuid%}%"
+	set slot 13 of {_gui} to {_p}'s skull named "&e&lStats" with lore "  &c❤ Health &f%{health::%{_p}'s uuid%}%" and "  &a❈ Defense &f%{defense::%{_p}'s uuid%}%" and "  &c❁ Strength &f%{strength::%{_p}'s uuid%}%" and "  &f✦ Speed %{speed::%{_p}'s uuid%}%" and "  &9☣ Crit Chance &f%{critChance::%{_p}'s uuid%}%%%" and "  &9☣ Crit Chance &f%{critDamage::%{_p}'s uuid%}%%%"
 	open {_gui} to {_p}
 			
