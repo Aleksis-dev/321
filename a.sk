@@ -1,3 +1,52 @@
+function scoreboard(p: player):
+	set title of {_p}'s scoreboard to "&e&lDungeons"
+	set line 1 of {_p}'s scoreboard to "&e"
+	set line 2 of {_p}'s scoreboard to "&f&l%{_p}%"
+	set line 3 of {_p}'s scoreboard to "&e"
+	set line 4 of {_p}'s scoreboard to "&fPurse: &6%{balance::%{_p}'s uuid%}%"
+
+on join:
+	while player is online:
+		wait 5 ticks
+
+
+function spawnMob(p: player, m: text, hp: number, lvl: number):
+	if {_m} is "Zombie":
+		spawn 1 zombie at {_p}'s location
+	set {_e} to last spawned entity
+	set {_e}'s health to {_hp}
+	set {_e}'s max health to {_hp}
+	set {_e}'s display name to "&7[Lvl %{_lvl}%] &c{_m} &7[&a%{_hp}%&7/&a%{_hp}%&7] &cx"
+
 on load:
 	{var} = "&7[Lvl 0] &cZombie &7[&a12&7/&a12&7]"
 	
+on damage:
+	if display name of victim contains "&7[Lvl":
+		set {_hp} to health of victim
+		set {_maxHP} to max health of victim
+		set {_name} to victim's display name
+		replace "&7[&a%{_hp}%&7/&a%{_maxHP}%]" in {_name} with "&7[&a%{_hp} - damage%&7/&a%{_maxHP}%]"
+		
+		make a new dh hologram:
+			name {_hp}
+			location: victim's location
+			lines: "&c%damage%"
+		
+		wait 0.3 seconds
+		delete hologram named "%{_hp}%"
+		
+function awardXP(xp: integer, p: player, type: text):
+	send action bar "&3+%{_xp}% %{_type}%" to {_p}
+		
+
+on death:
+	if display name of victim contains "&7[Lvl":
+		awardXP((max health of victim/10),attacker, "Combat exp" )
+		
+
+function MainMenu(p: player):
+	set {_gui} to a new chest inventory with 6 rows named "Menu"
+	set slot 13 of {_gui} to 
+	open {_gui} to {_p}
+			
